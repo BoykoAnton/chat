@@ -6,3 +6,4 @@ D:\GitHub\chat\server\obj\Debug\server.Properties.Resources.resources
 D:\GitHub\chat\server\obj\Debug\server.csproj.GenerateResource.Cache
 D:\GitHub\chat\server\obj\Debug\server.exe
 D:\GitHub\chat\server\obj\Debug\server.pdb
+D:\GitHub\chat\server\obj\Debug\server.FormServer.resources
