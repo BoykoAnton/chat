@@ -12,6 +12,7 @@ namespace server
     {
         // Incoming data from the client.  
         public static string data = null;
+        private static int port = 11000;
 
         public static void StartListening()
         {
@@ -21,9 +22,9 @@ namespace server
             // Establish the local endpoint for the socket.  
             // Dns.GetHostName returns the name of the   
             // host running the application.  
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());//dns.resolve
             IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
             // Create a TCP/IP socket.  
             Socket listener = new Socket(AddressFamily.InterNetwork,

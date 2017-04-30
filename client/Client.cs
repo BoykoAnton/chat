@@ -10,19 +10,21 @@ namespace client
 {
     class Client
     {
+        private static int port = 11000;
+
         public static void StartClient()
         {
             // Data buffer for incoming data.  
             byte[] bytes = new byte[1024];
-
+            
             // Connect to a remote device.  
             try
             {
                 // Establish the remote endpoint for the socket.  
                 // This example uses port 11000 on the local computer.  
-                IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());//dns.resolve
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
                 // Create a TCP/IP  socket.  
                 Socket sender = new Socket(AddressFamily.InterNetwork,
