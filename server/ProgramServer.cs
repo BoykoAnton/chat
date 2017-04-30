@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace server
 {
-    static class Program
+    static class ProgramServer
     {
         /// <summary>
         /// Главная точка входа для приложения.
@@ -16,7 +16,7 @@ namespace server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FormServer());
         }
     }
 }

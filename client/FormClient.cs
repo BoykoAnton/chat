@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace server
+namespace client
 {
-    public partial class Form1 : Form
+    public partial class FormClient : Form
     {
-        public Form1()
+        public FormClient()
         {
             InitializeComponent();
         }

@@ -1,6 +1,6 @@
-﻿namespace client
+﻿namespace server
 {
-    partial class Form1
+    partial class FormServer
     {
         /// <summary>
         /// Обязательная переменная конструктора.
