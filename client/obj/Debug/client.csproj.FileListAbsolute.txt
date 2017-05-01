@@ -6,3 +6,4 @@ D:\GitHub\chat\client\obj\Debug\client.csproj.GenerateResource.Cache
 D:\GitHub\chat\client\obj\Debug\client.exe
 D:\GitHub\chat\client\obj\Debug\client.pdb
 D:\GitHub\chat\client\obj\Debug\client.csprojResolveAssemblyReference.cache
+D:\GitHub\chat\client\obj\Debug\client.FormClient.resources
