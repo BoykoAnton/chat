@@ -5,73 +5,95 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using server;
 
 namespace client
 {
-    class Client
+    public class Client
     {
-        private static int port = 11000;
+        protected internal string Id { get; private set; }
+        protected internal NetworkStream Stream { get; private set; }
+        string userName;
+        TcpClient client;
+        Server server; // объект сервера
 
-        public static void StartClient()
+        public Client(TcpClient tcpClient, Server serverObject)
         {
-            // Data buffer for incoming data.  
-            byte[] bytes = new byte[1024];
-            
-            // Connect to a remote device.  
+            Id = Guid.NewGuid().ToString();
+            client = tcpClient;
+            server = serverObject;
+            serverObject.AddConnection(this);
+        }
+
+        public void Process()
+        {
             try
             {
-                // Establish the remote endpoint for the socket.  
-                // This example uses port 11000 on the local computer.  
-                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());//dns.resolve
-                IPAddress ipAddress = ipHostInfo.AddressList[0];
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
+                Stream = client.GetStream();
+                // получаем имя пользователя
+                string message = GetMessage();
+                userName = message;
 
-                // Create a TCP/IP  socket.  
-                Socket sender = new Socket(AddressFamily.InterNetwork,
-                    SocketType.Stream, ProtocolType.Tcp);
-
-                // Connect the socket to the remote endpoint. Catch any errors.  
-                try
+                message = userName + " вошел в чат";
+                // посылаем сообщение о входе в чат всем подключенным пользователям
+                server.BroadcastMessage(message, this.Id);
+                Console.WriteLine(message);
+                // в бесконечном цикле получаем сообщения от клиента
+                while (true)
                 {
-                    sender.Connect(remoteEP);
-
-                    Console.WriteLine("Socket connected to {0}",
-                        sender.RemoteEndPoint.ToString());
-
-                    // Encode the data string into a byte array.  
-                    byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
-
-                    // Send the data through the socket.  
-                    int bytesSent = sender.Send(msg);
-
-                    // Receive the response from the remote device.  
-                    int bytesRec = sender.Receive(bytes);
-                    Console.WriteLine("Echoed test = {0}",
-                        Encoding.ASCII.GetString(bytes, 0, bytesRec));
-
-                    // Release the socket.  
-                    sender.Shutdown(SocketShutdown.Both);
-                    sender.Close();
-
+                    try
+                    {
+                        message = GetMessage();
+                        message = String.Format("{0}: {1}", userName, message);
+                        Console.WriteLine(message);
+                        server.BroadcastMessage(message, this.Id);
+                    }
+                    catch
+                    {
+                        message = String.Format("{0}: покинул чат", userName);
+                        Console.WriteLine(message);
+                        server.BroadcastMessage(message, this.Id);
+                        break;
+                    }
                 }
-                catch (ArgumentNullException ane)
-                {
-                    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                }
-                catch (SocketException se)
-                {
-                    Console.WriteLine("SocketException : {0}", se.ToString());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Unexpected exception : {0}", e.ToString());
-                }
-
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                // в случае выхода из цикла закрываем ресурсы
+                server.RemoveConnection(this.Id);
+                Close();
             }
         }
+
+        // чтение входящего сообщения и преобразование в строку
+        private string GetMessage()
+        {
+            byte[] data = new byte[64]; // буфер для получаемых данных
+            StringBuilder builder = new StringBuilder();
+            int bytes = 0;
+            do
+            {
+                bytes = Stream.Read(data, 0, data.Length);
+                builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+            }
+            while (Stream.DataAvailable);
+
+            return builder.ToString();
+        }
+
+        // закрытие подключения
+        protected internal void Close()
+        {
+            if (Stream != null)
+                Stream.Close();
+            if (client != null)
+                client.Close();
+        }
     }
+}
 }

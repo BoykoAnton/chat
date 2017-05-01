@@ -5,79 +5,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using client;
 
 namespace server
 {
-    class Server
+    public class Server
     {
-        // Incoming data from the client.  
-        public static string data = null;
-        private static int port = 11000;
+        static TcpListener tcpListener; // сервер для прослушивания
+        List<Client> clients = new List<Client>(); // все подключения
 
-        public static void StartListening()
+        protected internal void AddConnection(Client Client)
         {
-            // Data buffer for incoming data.  
-            byte[] bytes = new Byte[1024];
-
-            // Establish the local endpoint for the socket.  
-            // Dns.GetHostName returns the name of the   
-            // host running the application.  
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());//dns.resolve
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
-
-            // Create a TCP/IP socket.  
-            Socket listener = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
-
-            // Bind the socket to the local endpoint and   
-            // listen for incoming connections.  
+            clients.Add(Client);
+        }
+        protected internal void RemoveConnection(string id)
+        {
+            // получаем по id закрытое подключение
+            Client client = clients.FirstOrDefault(c => c.Id == id);
+            // и удаляем его из списка подключений
+            if (client != null)
+                clients.Remove(client);
+        }
+        // прослушивание входящих подключений
+        protected internal void Listen()
+        {
             try
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(10);
+                tcpListener = new TcpListener(IPAddress.Any, 8888);
+                tcpListener.Start();
+                Console.WriteLine("Сервер запущен. Ожидание подключений...");
 
-                // Start listening for connections.  
                 while (true)
                 {
-                    Console.WriteLine("Waiting for a connection...");
-                    // Program is suspended while waiting for an incoming connection.  
-                    Socket handler = listener.Accept();
-                    data = null;
+                    TcpClient tcpClient = tcpListener.AcceptTcpClient();
 
-                    // An incoming connection needs to be processed.  
-                    while (true)
-                    {
-                        bytes = new byte[1024];
-                        int bytesRec = handler.Receive(bytes);
-                        data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                        if (data.IndexOf("<EOF>") > -1)
-                        {
-                            break;
-                        }
-                    }
-
-                    // Show the data on the console.  
-                    Console.WriteLine("Text received : {0}", data);
-
-                    // Echo the data back to the client.  
-                    byte[] msg = Encoding.ASCII.GetBytes(data);
-
-                    handler.Send(msg);
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
+                    Client Client = new Client(tcpClient, this);
+                    Thread clientThread = new Thread(new ThreadStart(Client.Process));
+                    clientThread.Start();
                 }
-
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(ex.Message);
+                Disconnect();
             }
-
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
-
         }
-        
+
+        // трансляция сообщения подключенным клиентам
+        protected internal void BroadcastMessage(string message, string id)
+        {
+            byte[] data = Encoding.Unicode.GetBytes(message);
+            for (int i = 0; i < clients.Count; i++)
+            {
+                if (clients[i].Id != id) // если id клиента не равно id отправляющего
+                {
+                    clients[i].Stream.Write(data, 0, data.Length); //передача данных
+                }
+            }
+        }
+        // отключение всех клиентов
+        protected internal void Disconnect()
+        {
+            tcpListener.Stop(); //остановка сервера
+
+            for (int i = 0; i < clients.Count; i++)
+            {
+                clients[i].Close(); //отключение клиента
+            }
+            Environment.Exit(0); //завершение процесса
+        }
     }
 }
