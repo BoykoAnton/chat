@@ -136,7 +136,7 @@
             this.ClientSize = new System.Drawing.Size(584, 361);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
+            this.Name = "ChatForm";
             this.Text = "Chat based on UDP by A.B.";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
