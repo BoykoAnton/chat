@@ -7,3 +7,5 @@ D:\GitHub\chat\client\obj\Debug\client.exe
 D:\GitHub\chat\client\obj\Debug\client.pdb
 D:\GitHub\chat\client\obj\Debug\client.csprojResolveAssemblyReference.cache
 D:\GitHub\chat\client\obj\Debug\client.FormClient.resources
+D:\GitHub\chat\client\bin\Debug\ChatLibrary.dll
+D:\GitHub\chat\client\bin\Debug\ChatLibrary.pdb

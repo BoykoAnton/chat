@@ -33,7 +33,7 @@ namespace ChatLibrary
                 string message = GetMessage();
                 userName = message;
 
-                message = userName + " вошел в чат";
+                message = userName + " now online";
                 // посылаем сообщение о входе в чат всем подключенным пользователям
                 server.BroadcastMessage(message, this.Id);
                 Console.WriteLine(message);
@@ -49,7 +49,7 @@ namespace ChatLibrary
                     }
                     catch
                     {
-                        message = String.Format("{0}: покинул чат", userName);
+                        message = String.Format("{0}: is offline", userName);
                         Console.WriteLine(message);
                         server.BroadcastMessage(message, this.Id);
                         break;

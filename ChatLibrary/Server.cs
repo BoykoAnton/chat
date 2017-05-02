@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 
 namespace ChatLibrary
@@ -13,11 +14,17 @@ namespace ChatLibrary
     {
         static TcpListener tcpListener; // сервер для прослушивания
         List<Client> clients = new List<Client>(); // все подключения
+                
+        public Server(RichTextBox LOG)
+        {
+            LOG.Text = "Server was created";
+        }
 
         public void AddConnection(Client clientObject)
         {
             clients.Add(clientObject);
         }
+
         protected internal void RemoveConnection(string id)
         {
             // получаем по id закрытое подключение
@@ -27,13 +34,14 @@ namespace ChatLibrary
                 clients.Remove(client);
         }
         // прослушивание входящих подключений
-        protected internal void Listen()
+        public void Listen()
         {
             try
             {
+                //LOG.Text = "Сервер запущен. Ожидание подключений...";
                 tcpListener = new TcpListener(IPAddress.Any, 8888);
                 tcpListener.Start();
-                Console.WriteLine("Сервер запущен. Ожидание подключений...");
+                LOG.Text = "Сервер запущен. Ожидание подключений...";
 
                 while (true)
                 {
@@ -46,7 +54,7 @@ namespace ChatLibrary
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
                 Disconnect();
             }
         }
@@ -64,7 +72,7 @@ namespace ChatLibrary
             }
         }
         // отключение всех клиентов
-        protected internal void Disconnect()
+        public void Disconnect()
         {
             tcpListener.Stop(); //остановка сервера
 

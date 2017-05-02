@@ -1,0 +1,5 @@
+D:\GitHub\chat\ChatLibrary\bin\Debug\ChatLibrary.dll
+D:\GitHub\chat\ChatLibrary\bin\Debug\ChatLibrary.pdb
+D:\GitHub\chat\ChatLibrary\obj\Debug\ChatLibrary.csprojResolveAssemblyReference.cache
+D:\GitHub\chat\ChatLibrary\obj\Debug\ChatLibrary.dll
+D:\GitHub\chat\ChatLibrary\obj\Debug\ChatLibrary.pdb
