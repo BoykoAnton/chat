@@ -17,7 +17,7 @@ namespace ChatLibrary
                 
         public Server(RichTextBox LOG)
         {
-            LOG.Text = "Server was created";
+            LOG.Text = "[ " + DateTime.Now.ToString() + " ]" + "  Server was created\n";
         }
 
         public void AddConnection(Client clientObject)
@@ -34,14 +34,14 @@ namespace ChatLibrary
                 clients.Remove(client);
         }
         // прослушивание входящих подключений
-        public void Listen()
+        public void Listen(RichTextBox LOG)
         {
             try
             {
                 //LOG.Text = "Сервер запущен. Ожидание подключений...";
                 tcpListener = new TcpListener(IPAddress.Any, 8888);
                 tcpListener.Start();
-                LOG.Text = "Сервер запущен. Ожидание подключений...";
+                LOG.Text += "Server is on. Wait for connecting...\n";
 
                 while (true)
                 {

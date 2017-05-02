@@ -29,7 +29,7 @@ namespace server
             try
             {
                 server = new Server(richTextBox1);
-                server.Listen();
+                //server.Listen(richTextBox1);
                 //listenThread = new Thread(new ThreadStart(server.Listen));
                 //listenThread.Start(); //старт потока
             }
