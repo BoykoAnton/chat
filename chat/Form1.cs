@@ -15,6 +15,7 @@ namespace chat
         public Form1()
         {
             InitializeComponent();
+            
         }
     }
 }
