@@ -45,7 +45,7 @@ namespace chat
 
                     this.Invoke(new MethodInvoker(() =>
                     {
-                        richTextBox1.Text += message + "\n";
+                        richTextBox1.Text += "[ " + DateTime.Now.ToShortTimeString() + " ] "+  message + "\n";
                     }));
                 }
             }
