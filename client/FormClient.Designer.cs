@@ -30,7 +30,6 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,7 +42,6 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.richTextBox2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -55,34 +53,26 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(201, 395);
+            this.button2.Location = new System.Drawing.Point(323, 373);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(225, 36);
+            this.button2.Size = new System.Drawing.Size(103, 58);
             this.button2.TabIndex = 3;
             this.button2.Text = "Send";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 398);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(167, 30);
-            this.listBox1.TabIndex = 2;
-            // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 340);
+            this.textBox1.Location = new System.Drawing.Point(6, 373);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(414, 39);
+            this.textBox1.Size = new System.Drawing.Size(311, 58);
             this.textBox1.TabIndex = 1;
             // 
             // richTextBox2
             // 
             this.richTextBox2.Location = new System.Drawing.Point(6, 19);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(414, 315);
+            this.richTextBox2.Size = new System.Drawing.Size(414, 348);
             this.richTextBox2.TabIndex = 0;
             this.richTextBox2.Text = "";
             // 
@@ -134,7 +124,6 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.GroupBox groupBox2;
